@@ -1,123 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Be My Valentine?</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Day ❤️</title>
 
 <style>
 body {
-    background-color: #ffe6e6;
+    margin: 0;
     font-family: Arial, sans-serif;
-    text-align: center;
-    padding-top: 500px;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     overflow: hidden;
 }
 
-h1 {
-    color: #ff4d4d;
-    font-size: 40px;
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    width: 350px;
+    z-index: 2;
+}
+
+h2 {
+    color: #ff4d6d;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
 }
 
 button {
-    font-size: 20px;
-    padding: 10px 25px;
-    margin: 20px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
+    background-color: #ff4d6d;
+    color: white;
     cursor: pointer;
 }
 
-#yes {
-    background-color: #ff4d4d;
+button:hover {
+    background-color: #e63950;
+}
+
+#error {
+    color: red;
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.couple-img {
+    width: 220px;
+    margin-top: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.from {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff4d6d;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 6s linear forwards;
     color: white;
 }
 
-#no {
-    background-color: white;
-    color: #ff4d4d;
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* Explosion hearts */
+.explosion-heart {
     position: absolute;
+    font-size: 25px;
+    color: white;
+    animation: explode 1s ease-out forwards;
 }
 
-.heart {
-    position: absolute;
-    color: red;
-    font-size: 20px;
-    animation: float 5s infinite;
-}
-
-@keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-100px); }
-    100% { transform: translateY(0); }
-}
-
-#message {
-    font-size: 30px;
-    color: #ff4d4d;
-    display: none;
+@keyframes explode {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>Will You Be My Valentine? 💖</h1>
+<div class="container" id="loginBox">
+    <h2>Enter Our Secret Password 🔐</h2>
+    <input type="password" id="password" placeholder="Enter password...">
+    <br>
+    <button onclick="checkPassword()">Unlock ❤️</button>
+    <p id="error">Wrong password 🥺</p>
+</div>
 
-<button id="yes" onclick="yesClicked()">Yes</button>
-<button id="no" onmouseover="moveNo()">No</button>
+<div class="container hidden" id="messageBox">
+    <h2>Happy Valentine's Day and Happy Monthsary💖</h2>
+    <p id="typedMessage"></p>
 
-<p id="message">YAY! I knew you would say yes! 😁💘<br><br>Mahal na mahal kita palagi baby.💖</p>
+    <img src="jay.jfif" class="couple-img" alt="">
 
-<!-- Background music -->
-<audio id="music">
+
+</div>
+
+<audio id="bgMusic" loop>
     <source src="tahanan.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-function moveNo() {
-    var x = Math.random() * (window.innerWidth - 100);
-    var y = Math.random() * (window.innerHeight - 50);
+const messageText = "Everyday with you feels so special. Like life became softer and brighter the moment you came into my life. Thank you for your love, care and for being my safe place when everything gets overwhelming. I want you to know how grateful I am to have you. With you, I found not only a girlfriend but a home that I will always choose. No matter where life takes us, my heart will always be yours baby. I will always love you in ways that make you feel valued, appreciated, and cherished, because you deserve nothing less. I Love you today, tommorrow and on all the days we will share together. Take care always! I love you, baby. 💖";
 
-    document.getElementById("no").style.left = x + "px";
-    document.getElementById("no").style.top = y + "px";
-}
+function checkPassword() {
+    const correctPassword = "jaysonlalai14"; // CHANGE THIS
+    const input = document.getElementById("password").value;
+    const error = document.getElementById("error");
+    const music = document.getElementById("bgMusic");
 
-function yesClicked() {
-    document.getElementById("message").style.display = "block";
+    if (input === correctPassword) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("messageBox").classList.remove("hidden");
 
-    // Play music
-    document.getElementById("music").play();
-
-    createHearts();
-}
-
-function createHearts() {
-    for (let i = 0; i < 25; i++) {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "❤";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.top = Math.random() * 100 + "vh";
-        heart.style.fontSize = Math.random() * 30 + 10 + "px";
-        document.body.appendChild(heart);
+        music.play();
+        explodeHearts();
+        startFloatingHearts();
+        typeMessage();
+    } else {
+        error.style.display = "block";
     }
 }
+
+function typeMessage() {
+    let i = 0;
+    const speed = 100;
+    const target = document.getElementById("typedMessage");
+
+    function typing() {
+        if (i < messageText.length) {
+            target.innerHTML += messageText.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+
+    typing();
+}
+
+function explodeHearts() {
+    for (let i = 0; i < 30; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("explosion-heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+
+        const x = (Math.random() - 0.5) * 400 + "px";
+        const y = (Math.random() - 0.5) * 400 + "px";
+
+        heart.style.setProperty('--x', x);
+        heart.style.setProperty('--y', y);
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 1000);
+    }
+}
+
+function startFloatingHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 6000);
+    }, 300);
+}
 </script>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<footer>--Jay--</footer>
+
 </body>
 </html>
-
